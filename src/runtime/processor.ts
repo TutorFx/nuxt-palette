@@ -1,12 +1,24 @@
 import { update, mapKeys, get } from 'lodash'
 import { flatten } from 'flat'
-import { isString, isObject } from '@intlify/shared'
+import { isString, isObject, isArray } from '@intlify/shared'
 import type { ConsolaInstance } from 'consola'
-import type { ExplicitTheme, TailwindColor, Themes } from '../types'
+import type { ExplicitTheme, SeparedPath, TailwindColor, Themes } from '../types'
 
 import { convertColor } from './colors'
 import { toKebabCase } from './utils'
 
+export function getSeparatedPaths(paths: string[]): SeparedPath[] {
+  return paths.map((path) => {
+    const [theme, relativePath] = path
+      .replace('.', '@')
+      .split('@')
+
+    return {
+      theme,
+      relativePath,
+    }
+  })
+}
 export function palettePathProcessor(themes: Themes) {
   const flat = flatten(themes)
 
@@ -37,16 +49,7 @@ export function palettePathProcessor(themes: Themes) {
 export function validatePaths(logger: ConsolaInstance, paths: string[] | null) {
   if (!Array.isArray(paths)) return null
 
-  const separedPath = paths.map((path) => {
-    const [theme, relativePath] = path
-      .replace('.', '@')
-      .split('@')
-
-    return {
-      theme,
-      relativePath,
-    }
-  })
+  const separedPath = getSeparatedPaths(paths)
 
   const themeNameSet = [...new Set(separedPath.map(p => p.theme))]
   const generalPathsSet = [...new Set(separedPath.map(p => p.relativePath))]
@@ -81,18 +84,46 @@ export const explicitThemeFormatter = (item: ExplicitTheme) => {
   }
 }
 
-export function generateRootStyles<T extends object>(themes: T | null, paths: string[] | null) {
-  const separedPath = paths.map((path) => {
-    const [theme, relativePath] = path
-      .replace('.', '@')
-      .split('@')
+export function generateRootStyles<T extends object>(themes: T, paths: string[]) {
+  const separedPath = getSeparatedPaths(paths)
+
+  const themeNameSet = [...new Set(separedPath.map(p => p.theme))]
+
+  return themeNameSet.map((theme) => {
+    const data = separedPath
+      .filter(s => s.theme == theme)
+      .map((s) => {
+        const color = get(themes, theme + '.' + s.relativePath)
+        const displayPath = toKebabCase(s.relativePath)
+
+        if (!color) return null
+
+        if (isArray(color))
+          return `--${displayPath}: ${color.join(' ')}`
+
+        if (isObject(color)) {
+          return Object.keys(color)
+            .map((key) => {
+              const c = color[key]
+              if (isArray(c))
+                return `--${displayPath}-${key}: ${c.join(' ')}`
+              if (isObject(c))
+                return null
+            })
+            .filter(s => s != null)
+            .join('\n')
+        }
+      })
+      .filter(s => s != null)
+      .join('\n')
 
     return {
+      data,
       theme,
-      relativePath,
     }
   })
-  return paths?.map(p => [`--${toKebabCase(p)}`, get(themes, p).join(' ')]) ?? null
+    .map(v => `:root[data-theme="${v.theme}"] {\n${v.data}\n}`)
+    .join('\n')
 }
 
 export function paletteProcessor(themes: Themes, paths: string[] | null, formatter: (item: ExplicitTheme) => unknown = explicitThemeFormatter) {
@@ -110,22 +141,18 @@ export function paletteProcessor(themes: Themes, paths: string[] | null, formatt
 export function tailwindThemeGenerator(themes: Themes, paths: string[] | null) {
   if (!Array.isArray(paths)) return null
 
-  const separedPath = paths.map((path) => {
-    return path
-      .replace('.', '@')
-      .split('@')[1]
-  })
+  const separedPath = getSeparatedPaths(paths)
 
   return [...new Set(separedPath)].reduce((acc: { [key: string]: TailwindColor }, curr) =>
-    (acc[toKebabCase(curr)] = {
-      DEFAULT: `hsl(var(--${toKebabCase(curr)}-b))`,
-      foreground: `hsl(var(--${toKebabCase(curr)}-f))`,
+    (acc[toKebabCase(curr.relativePath)] = {
+      DEFAULT: `hsl(var(--${toKebabCase(curr.relativePath)}-b))`,
+      foreground: `hsl(var(--${toKebabCase(curr.relativePath)}-f))`,
       50: '',
       100: '',
       200: '',
       300: '',
       400: '',
-      500: '',
+      500: `hsl(var(--${toKebabCase(curr.relativePath)}-b))`,
       600: '',
       700: '',
       800: '',

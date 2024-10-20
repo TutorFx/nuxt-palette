@@ -44,3 +44,8 @@ export interface TailwindColor {
   900: string
   950: string
 }
+
+export interface SeparedPath {
+  theme: string
+  relativePath: string
+}

@@ -1,6 +1,7 @@
 import { defineNuxtModule, addPlugin, createResolver, useLogger, installModule } from '@nuxt/kit'
 import type { Themes } from './types'
 import { generateRootStyles, palettePathProcessor, paletteProcessor, tailwindThemeGenerator, validatePaths } from './runtime/processor'
+import { isArray } from '@intlify/shared'
 
 // Module options TypeScript interface definition
 export interface ModuleOptions {
@@ -21,19 +22,21 @@ export default defineNuxtModule<ModuleOptions>({
     // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
     addPlugin(resolver.resolve('./runtime/plugin'))
 
-    logger.info('Hello from my module!')
-
     const paths = palettePathProcessor(_options.themes)
 
     validatePaths(logger, paths)
 
     const palette = paletteProcessor(_options.themes, paths)
 
+    console.log(palette)
+
     const theme = tailwindThemeGenerator(_options.themes, paths)
 
-    if (palette) {
-      const root = generateRootStyles(palette, paths)
-    }
+    if (!palette || !paths) return
+
+    const root = generateRootStyles(palette, paths)
+
+    if (!root) return
 
     await installModule('@nuxtjs/tailwindcss', {
       // module configuration
@@ -41,12 +44,11 @@ export default defineNuxtModule<ModuleOptions>({
         theme: {
           extend: {
             colors: theme,
-            fontFamily: {
-              sans: 'Inter, ui-sans-serif, system-ui, -apple-system, Arial, Roboto, sans-serif',
-            },
           },
         },
       },
     })
+
+    logger.success('Nuxt-Palette loaded')
   },
 })
