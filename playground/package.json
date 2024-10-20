@@ -1,13 +1,16 @@
 {
-  "private": true,
   "name": "nuxt-palette-playground",
-  "type": "module",
+  "dependencies": {
+    "nuxt": "^3.13.2"
+  },
+  "private": true,
   "scripts": {
     "dev": "nuxi dev",
     "build": "nuxi build",
     "generate": "nuxi generate"
   },
-  "dependencies": {
-    "nuxt": "^3.13.2"
+  "type": "module",
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.12.2"
   }
 }
