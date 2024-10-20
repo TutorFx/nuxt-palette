@@ -1,7 +1,6 @@
-import { defineNuxtModule, addPlugin, createResolver, useLogger, installModule } from '@nuxt/kit'
+import { defineNuxtModule, addPlugin, createResolver, useLogger, installModule, addTemplate } from '@nuxt/kit'
 import type { Themes } from './types'
 import { generateRootStyles, palettePathProcessor, paletteProcessor, tailwindThemeGenerator, validatePaths } from './runtime/processor'
-import { isArray } from '@intlify/shared'
 
 // Module options TypeScript interface definition
 export interface ModuleOptions {
@@ -19,16 +18,11 @@ export default defineNuxtModule<ModuleOptions>({
     const logger = useLogger('nuxt-palette')
     const resolver = createResolver(import.meta.url)
 
-    // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
-    addPlugin(resolver.resolve('./runtime/plugin'))
-
     const paths = palettePathProcessor(_options.themes)
 
     validatePaths(logger, paths)
 
     const palette = paletteProcessor(_options.themes, paths)
-
-    console.log(palette)
 
     const theme = tailwindThemeGenerator(_options.themes, paths)
 
@@ -48,6 +42,20 @@ export default defineNuxtModule<ModuleOptions>({
         },
       },
     })
+
+    await installModule('@nuxtjs/color-mode', {
+      // module configuration
+      dataValue: 'theme',
+      preference: 'light',
+    })
+
+    addTemplate({
+      filename: 'palette.config.mjs',
+      getContents: () => 'export default ' + JSON.stringify({ root }),
+    })
+
+    // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
+    addPlugin(resolver.resolve('./runtime/plugin'))
 
     logger.success('Nuxt-Palette loaded')
   },

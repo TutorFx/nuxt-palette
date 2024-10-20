@@ -106,7 +106,7 @@ export function generateRootStyles<T extends object>(themes: T, paths: string[])
             .map((key) => {
               const c = color[key]
               if (isArray(c))
-                return `--${displayPath}-${key}: ${c.join(' ')}`
+                return `--${displayPath}-${key}: ${c.join(' ')};`
               if (isObject(c))
                 return null
             })

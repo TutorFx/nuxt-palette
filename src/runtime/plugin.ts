@@ -1,5 +1,14 @@
 import { defineNuxtPlugin } from '#app'
 
+// @ts-expect-error - just ignore lol
+import paletteConfig from '#build/palette.config.mjs'
+
 export default defineNuxtPlugin((_nuxtApp) => {
-  console.log('Plugin injected by nuxt-palette!')
+  useHead({
+    style: [
+      {
+        children: paletteConfig.root,
+      },
+    ],
+  })
 })
