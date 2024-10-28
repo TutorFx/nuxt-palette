@@ -4,8 +4,8 @@ export default defineNuxtConfig({
     themes: {
       light: {
         primary: {
-          f: '#424412',
-          b: '#fff',
+          f: '#fff',
+          b: '#424412',
         },
         secondary: '#425241',
         info: {

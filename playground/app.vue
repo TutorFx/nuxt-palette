@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary-foreground">
+  <div class="bg-primary text-primary-foreground">
     Nuxt module playground!
   </div>
 </template>

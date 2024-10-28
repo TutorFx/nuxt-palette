@@ -1,4 +1,6 @@
-import { update, mapKeys, get } from 'lodash'
+import get from 'lodash/get.js'
+import mapKeys from 'lodash/mapKeys'
+import update from 'lodash/update'
 import { flatten } from 'flat'
 import { isString, isObject, isArray } from '@intlify/shared'
 import type { ConsolaInstance } from 'consola'
@@ -84,7 +86,10 @@ export const explicitThemeFormatter = (item: ExplicitTheme) => {
   }
 }
 
-export function generateRootStyles<T extends object>(themes: T, paths: string[]) {
+export function generateRootStyles<T extends object>(themes: T | null, paths: string[] | null): string | null {
+  if (!paths) return null
+  if (!Array.isArray(paths)) return null
+
   const separedPath = getSeparatedPaths(paths)
 
   const themeNameSet = [...new Set(separedPath.map(p => p.theme))]
@@ -147,17 +152,12 @@ export function tailwindThemeGenerator(themes: Themes, paths: string[] | null) {
     (acc[toKebabCase(curr.relativePath)] = {
       DEFAULT: `hsl(var(--${toKebabCase(curr.relativePath)}-b))`,
       foreground: `hsl(var(--${toKebabCase(curr.relativePath)}-f))`,
-      50: '',
-      100: '',
-      200: '',
-      300: '',
-      400: '',
-      500: `hsl(var(--${toKebabCase(curr.relativePath)}-b))`,
-      600: '',
-      700: '',
-      800: '',
-      950: '',
-      900: '',
+      // ...generateTailwindShades(`hsl(var(--${toKebabCase(curr.relativePath)}-b))`),
     }, acc),
   {})
 }
+
+/* export function generateTailwindShades(color: string) {
+  const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+  return Object.fromEntries(shades.map(key => [key, `oklch(from ${color} calc(l + ${key * 0.0005}) c h / 1)`]))
+} */
