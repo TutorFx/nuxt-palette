@@ -2,7 +2,7 @@ import { defineNuxtModule, addPlugin, createResolver, useLogger, installModule, 
 import defu from 'defu'
 
 import type { ModuleOptions } from './types'
-import { generateRootStyles, palettePathProcessor, paletteProcessor, tailwindThemeGenerator, validatePaths } from './runtime/processor'
+import { generateRootStyles, extractPalettePaths, processPalette, generateTailwindTheme, validatePaths } from './runtime/processor'
 import { DEFAULT_PALETTE_OPTIONS } from './runtime/constants'
 
 export default defineNuxtModule<ModuleOptions>({
@@ -21,15 +21,15 @@ export default defineNuxtModule<ModuleOptions>({
 
     const options = defu(_options, DEFAULT_PALETTE_OPTIONS)
 
-    const { themes, defaultTheme } = options
-    const paths = palettePathProcessor(themes)
+    const { themes, defaultTheme, shades } = options
+    const paths = extractPalettePaths(themes)
 
     validatePaths(logger, paths)
 
-    const palette = paletteProcessor(themes, paths)
-    const theme = tailwindThemeGenerator(themes, paths)
+    const palette = processPalette(themes, paths)
+    const theme = generateTailwindTheme(themes, paths, shades)
 
-    const root = generateRootStyles(palette, paths)
+    const root = generateRootStyles(palette, paths, defaultTheme)
 
     await installModule('@nuxtjs/tailwindcss', {
       // module configuration

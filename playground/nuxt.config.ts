@@ -5,7 +5,7 @@ export default defineNuxtConfig({
       light: {
         primary: {
           f: '#fff',
-          b: '#424412',
+          b: '#FFBA08',
         },
         secondary: '#425241',
         info: {

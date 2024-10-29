@@ -21,7 +21,7 @@ export function getSeparatedPaths(paths: string[]): SeparedPath[] {
     }
   })
 }
-export function palettePathProcessor(themes: Themes) {
+export function extractPalettePaths(themes: Themes) {
   const flat = flatten(themes)
 
   if (!isObject(flat)) return null
@@ -69,7 +69,7 @@ export function validatePaths(logger: ConsolaInstance, paths: string[] | null) {
   })
 }
 
-export const explicitThemeFormatter = (item: ExplicitTheme) => {
+export const formatExplicitTheme = (item: ExplicitTheme) => {
   if (isObject(item))
     return Object.assign(item, {
       f: convertColor(item.f),
@@ -86,7 +86,7 @@ export const explicitThemeFormatter = (item: ExplicitTheme) => {
   }
 }
 
-export function generateRootStyles<T extends object>(themes: T | null, paths: string[] | null): string | null {
+export function generateRootStyles<T extends object>(themes: T | null, paths: string[] | null, defaultTheme: string): string | null {
   if (!paths) return null
   if (!Array.isArray(paths)) return null
 
@@ -127,23 +127,30 @@ export function generateRootStyles<T extends object>(themes: T | null, paths: st
       theme,
     }
   })
-    .map(v => `:root[data-theme="${v.theme}"] {\n${v.data}\n}`)
+    .map(v => v.theme === defaultTheme
+      ? `:root{\n${v.data}\n}`
+      : `:root[data-theme="${v.theme}"] {\n${v.data}\n}`,
+    )
     .join('\n')
 }
 
-export function paletteProcessor(themes: Themes, paths: string[] | null, formatter: (item: ExplicitTheme) => unknown = explicitThemeFormatter) {
+export function processPalette(
+  themes: Themes,
+  paths: string[] | null,
+  formatter: (item: ExplicitTheme) => unknown = formatExplicitTheme,
+) {
   const staticThemes = structuredClone(themes)
 
   if (!Array.isArray(paths)) return null
 
-  for (const i in paths) {
-    update(staticThemes, paths[i], formatter)
+  for (const path of paths) {
+    update(staticThemes, path, formatter)
   }
 
   return staticThemes
 }
 
-export function tailwindThemeGenerator(themes: Themes, paths: string[] | null) {
+export function generateTailwindTheme(themes: Themes, paths: string[] | null, shades: number[]) {
   if (!Array.isArray(paths)) return null
 
   const separedPath = getSeparatedPaths(paths)
@@ -152,12 +159,20 @@ export function tailwindThemeGenerator(themes: Themes, paths: string[] | null) {
     (acc[toKebabCase(curr.relativePath)] = {
       DEFAULT: `hsl(var(--${toKebabCase(curr.relativePath)}-b))`,
       foreground: `hsl(var(--${toKebabCase(curr.relativePath)}-f))`,
-      // ...generateTailwindShades(`hsl(var(--${toKebabCase(curr.relativePath)}-b))`),
+      ...generateTailwindShades(`hsl(var(--${toKebabCase(curr.relativePath)}-b))`, shades),
     }, acc),
   {})
 }
 
-/* export function generateTailwindShades(color: string) {
-  const shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
-  return Object.fromEntries(shades.map(key => [key, `oklch(from ${color} calc(l + ${key * 0.0005}) c h / 1)`]))
-} */
+export function generateTailwindShades(color: string, shades: number[]) {
+  const sumShades = shades
+    .reduce(function (accumulator, value) {
+      return accumulator + value
+    }, 0)
+  const median = sumShades / shades.length
+  return Object.fromEntries(
+    shades.map(key =>
+      [key, `oklch(from ${color} calc(l + ${((key - median) * 0.0005).toFixed(3)}) c h / 1)`],
+    ),
+  )
+}

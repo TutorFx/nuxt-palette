@@ -6,4 +6,5 @@ export * from './runtime/shared-types'
 export interface ModuleOptions {
   themes?: Themes
   defaultTheme?: string
+  shades?: number[]
 }
