@@ -6,26 +6,25 @@ Find and replace all on all files (CMD+SHIFT+F):
 - Package name: nuxt-palette
 - Description: My new Nuxt module
 -->
+<p align="center">
+  <a href="https://pinia.vuejs.org" target="_blank" rel="noopener noreferrer">
+    <img width="180" src="https://github.com/TutorFx/nuxt-palette/blob/main/brand/logo.svg" alt="Nuxt Palette logo">
+  </a>
+</p>
+<br/>
 
-# My Module
+# Nuxt Palette
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-My new Nuxt module for doing amazing things.
+This module is being changed heavily. At the moment I do not recommend that it be used in production.
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/nuxt-palette?file=playground%2Fapp.vue) -->
 <!-- - [📖 &nbsp;Documentation](https://example.com) -->
-
-## Features
-
-<!-- Highlight some of the features your module provide here -->
-- ⛰ &nbsp;Foo
-- 🚠 &nbsp;Bar
-- 🌲 &nbsp;Baz
 
 ## Quick Setup
 
@@ -35,7 +34,7 @@ Install the module to your Nuxt application with one command:
 npx nuxi module add nuxt-palette
 ```
 
-That's it! You can now use My Module in your Nuxt app ✨
+That's it! You can now use Nuxt Palette in your Nuxt app ✨
 
 
 ## Contribution
