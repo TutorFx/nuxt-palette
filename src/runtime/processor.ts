@@ -172,7 +172,7 @@ export function generateTailwindShades(color: string, shades: number[]) {
   const median = sumShades / shades.length
   return Object.fromEntries(
     shades.map(key =>
-      [key, `oklch(from ${color} calc(l + ${((key - median) * 0.0005).toFixed(3)}) c h / 1)`],
+      [key, `oklch(from ${color} calc(l + ${((key - median) * -0.0005).toFixed(3)}) c h / 1)`],
     ),
   )
 }
