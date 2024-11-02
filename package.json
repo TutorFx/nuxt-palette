@@ -1,8 +1,11 @@
 {
   "name": "nuxt-palette",
   "version": "1.0.0",
-  "description": "My new Nuxt module",
-  "repository": "your-org/nuxt-palette",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TutorFx/nuxt-palette.git"
+  },
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -29,7 +32,9 @@
     "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.13.2"
+    "@nuxt/kit": "^3.13.2",
+    "defu": "^6.1.4",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@intlify/shared": "^10.0.4",
@@ -46,10 +51,8 @@
     "changelogen": "^0.5.7",
     "color-convert": "^2.0.1",
     "commitizen": "^4.3.1",
-    "defu": "^6.1.4",
     "eslint": "^9.11.0",
     "flat": "^6.0.1",
-    "lodash": "^4.17.21",
     "nuxt": "^3.13.0",
     "typescript": "latest",
     "vitest": "^2.1.1",

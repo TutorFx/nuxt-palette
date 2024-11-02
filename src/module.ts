@@ -1,5 +1,5 @@
 import { defineNuxtModule, addPlugin, createResolver, useLogger, installModule, addTemplate } from '@nuxt/kit'
-import defu from 'defu'
+import { defu } from 'defu'
 
 import type { ModuleOptions } from './types'
 import { generateRootStyles, extractPalettePaths, processPalette, generateTailwindTheme, validatePaths } from './runtime/processor'

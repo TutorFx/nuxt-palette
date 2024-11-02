@@ -1,5 +1,6 @@
+<!-- eslint-disable vue/singleline-html-element-content-newline -->
 <template>
-  <div>basic</div>
+  <div class="bg-primary">basic</div>
 </template>
 
 <script setup>

@@ -1,6 +1,6 @@
 import get from 'lodash/get.js'
-import mapKeys from 'lodash/mapKeys'
-import update from 'lodash/update'
+import mapKeys from 'lodash/mapKeys.js'
+import update from 'lodash/update.js'
 import { flatten } from 'flat'
 import { isString, isObject, isArray } from '@intlify/shared'
 import type { ConsolaInstance } from 'consola'
