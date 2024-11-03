@@ -26,6 +26,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     validatePaths(logger, paths)
 
+    const themeNames = Object.keys(themes)
     const palette = processPalette(themes, paths)
     const theme = generateTailwindTheme(themes, paths, shades)
 
@@ -50,7 +51,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     addTemplate({
       filename: 'palette.config.mjs',
-      getContents: () => 'export default ' + JSON.stringify({ root }),
+      getContents: () => 'export default ' + JSON.stringify({ root, themeNames }),
     })
 
     logger.success('Nuxt-Palette loaded')

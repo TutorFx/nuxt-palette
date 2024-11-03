@@ -4,11 +4,19 @@ import { defineNuxtPlugin } from '#app'
 import paletteConfig from '#build/palette.config.mjs'
 
 export default defineNuxtPlugin((_nuxtApp) => {
+  const { root, themeNames }: { root: string, themeNames: string[] } = paletteConfig
+
   useHead({
     style: [
       {
-        children: paletteConfig.root,
+        children: root,
       },
     ],
   })
+
+  return {
+    provide: {
+      themeNames,
+    },
+  }
 })
