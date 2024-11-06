@@ -1,6 +1,8 @@
 {
   "name": "nuxt-palette-playground",
   "dependencies": {
+    "@nuxt/icon": "^1.6.1",
+    "@nuxt/image": "^1.8.1",
     "nuxt": "^3.13.2"
   },
   "private": true,

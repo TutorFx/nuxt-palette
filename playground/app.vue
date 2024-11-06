@@ -1,29 +1,35 @@
+<script setup>
+useSeoMeta({
+  title: 'Nuxt Palette Demo',
+  description: 'Demo of using @TutorFx/nuxt-palette for Nuxt, supporting dark mode and custom colors',
+})
+</script>
+
 <template>
-  <div>
-    <div>
-      <div
-        v-for="(theme, i) in $themeNames"
-        :key="i"
-      >
-        {{ theme }}
+  <div class="min-h-[100dvh] grid items-center">
+    <div class="grid gap-10 p-14">
+      <NuxtImg
+        width="140"
+        class="mx-auto"
+        src="https://github.com/TutorFx/nuxt-palette/raw/main/brand/logo.svg"
+      />
+      <div class="container mx-auto text-center">
+        <ColorModePicker />
+        <NuxtPage />
+        <p class="p-4 rounded-lg bg-secondary text-secondary-foreground inline-block">
+          <span>Demo based on </span>
+          <a
+            class="text-primary-foreground underline"
+            href="https://github.com/TutorFx/nuxt-palette"
+          >@TutorFx/nuxt-palette</a> <span>module.</span>
+        </p>
       </div>
-    </div>
-    <div class="grid grid-flow-col w-full h-24">
-      <div class="bg-primary" />
-      <div class="bg-primary-50" />
-      <div class="bg-primary-100" />
-      <div class="bg-primary-200" />
-      <div class="bg-primary-300" />
-      <div class="bg-primary-400" />
-      <div class="bg-primary-500" />
-      <div class="bg-primary-600" />
-      <div class="bg-primary-700" />
-      <div class="bg-primary-800" />
-      <div class="bg-primary-900" />
-      <div class="bg-primary-950" />
     </div>
   </div>
 </template>
 
-<script setup>
-</script>
+<style>
+body {
+  @apply bg-base text-base-foreground transition-colors duration-300
+}
+</style>
