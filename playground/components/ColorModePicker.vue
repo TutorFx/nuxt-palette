@@ -9,7 +9,7 @@ function iconName(theme) {
 
 <template>
   <div>
-    <ul class="list-none p-0 m-0">
+    <ul class="list-none p-0 m-0 flex flex-wrap justify-center gap-3">
       <li
         v-for="theme of ['system', ...$themeNames]"
         :key="theme"
@@ -17,9 +17,10 @@ function iconName(theme) {
           preferred: !$colorMode.unknown && theme === $colorMode.preference,
           selected: !$colorMode.unknown && theme === $colorMode.value,
         }"
-        class="inline-block p-3 mr-5 leading-[0] relative top-0 cursor-pointer
+        class="p-3 leading-[0] relative top-0 cursor-pointer
         border border-border [&.preferred]:border-primary-foreground [&.preferred]:-top-1
-        [&.selected]:text-primary-foreground rounded-md hover:-top-1 duration-300 transition-[top] ease-in-out"
+        [&.selected]:text-primary-foreground rounded-md hover:-top-1 duration-300
+        transition-[top] ease-in-out"
         @click="$colorMode.preference = theme"
       >
         <Icon
