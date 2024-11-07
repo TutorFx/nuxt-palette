@@ -23,8 +23,10 @@ Find and replace all on all files (CMD+SHIFT+F):
 This module is being changed heavily. At the moment I do not recommend that it be used in production.
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
-<!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/nuxt-palette?file=playground%2Fapp.vue) -->
+- [🏀 Online playground](https://stackblitz.com/~/github.com/TutorFx/nuxt-palette?file=playground/app.vue)
 <!-- - [📖 &nbsp;Documentation](https://example.com) -->
+
+
 
 ## Quick Setup
 
