@@ -6,6 +6,7 @@ import { isString, isObject, isArray } from '@intlify/shared'
 import type { ConsolaInstance } from 'consola'
 import type { ExplicitTheme, SeparedPath, TailwindColor, Themes } from '../types'
 
+import { PathSet } from '../transform/path-classes'
 import { convertColor } from './colors'
 import { toKebabCase } from './utils'
 
@@ -21,12 +22,13 @@ export function getSeparatedPaths(paths: string[]): SeparedPath[] {
     }
   })
 }
-export function extractPalettePaths(themes: Themes) {
+
+export function extractPalettePaths(themes: Themes): PathSet | null {
   const flat = flatten(themes)
 
   if (!isObject(flat)) return null
 
-  return [...new Set(
+  return new PathSet([...new Set(
     Object.keys(
       mapKeys(flat, (value, key) => {
         if (!isString(key)) return null
@@ -45,21 +47,16 @@ export function extractPalettePaths(themes: Themes) {
       }),
     )
       .filter(key => key != null),
-  )]
+  )])
 }
 
-export function validatePaths(logger: ConsolaInstance, paths: string[] | null) {
-  if (!Array.isArray(paths)) return null
+export function validatePaths(logger: ConsolaInstance, p: PathSet | null) {
+  if (p == null) return null
 
-  const separedPath = getSeparatedPaths(paths)
-
-  const themeNameSet = [...new Set(separedPath.map(p => p.theme))]
-  const generalPathsSet = [...new Set(separedPath.map(p => p.relativePath))]
-
-  generalPathsSet.map((path) => {
-    themeNameSet.map((theme) => {
+  p.generalPathsSet.map((path) => {
+    p.themeNameSet.map((theme) => {
       const fullPath = `${theme}.${path}`
-      const isMissing = !paths.includes(fullPath)
+      const isMissing = !p.paths.includes(fullPath)
 
       if (isMissing) {
         logger.warn(`Missing color definition at: "${fullPath}".`)
@@ -86,16 +83,13 @@ export const formatExplicitTheme = (item: ExplicitTheme) => {
   }
 }
 
-export function generateRootStyles<T extends object>(themes: T | null, paths: string[] | null, defaultTheme: string): string | null {
-  if (!paths) return null
-  if (!Array.isArray(paths)) return null
+export function generateRootStyles<T extends object>(themes: T | null, p: PathSet | null, defaultTheme: string): string | null {
+  if (p == null) return null
 
-  const separedPath = getSeparatedPaths(paths)
-
-  const themeNameSet = [...new Set(separedPath.map(p => p.theme))]
+  const themeNameSet = [...new Set(p.separedPath.map(p => p.theme))]
 
   return themeNameSet.map((theme) => {
-    const data = separedPath
+    const data = p.separedPath
       .filter(s => s.theme == theme)
       .map((s) => {
         const color = get(themes, theme + '.' + s.relativePath)
@@ -104,7 +98,7 @@ export function generateRootStyles<T extends object>(themes: T | null, paths: st
         if (!color) return null
 
         if (isArray(color))
-          return `--${displayPath}: ${color.join(' ')}`
+          return `--${displayPath}: ${color.join(' ')};`
 
         if (isObject(color)) {
           return Object.keys(color)
@@ -136,26 +130,24 @@ export function generateRootStyles<T extends object>(themes: T | null, paths: st
 
 export function processPalette(
   themes: Themes,
-  paths: string[] | null,
+  p: PathSet | null,
   formatter: (item: ExplicitTheme) => unknown = formatExplicitTheme,
 ) {
   const staticThemes = structuredClone(themes)
 
-  if (!Array.isArray(paths)) return null
+  if (p == null) return null
 
-  for (const path of paths) {
+  for (const path of p.paths) {
     update(staticThemes, path, formatter)
   }
 
   return staticThemes
 }
 
-export function generateTailwindTheme(themes: Themes, paths: string[] | null, shades: number[]) {
-  if (!Array.isArray(paths)) return null
+export function generateTailwindTheme(themes: Themes, p: PathSet | null, shades: number[]) {
+  if (p == null) return null
 
-  const separedPath = getSeparatedPaths(paths)
-
-  return [...new Set(separedPath)].reduce((acc: { [key: string]: TailwindColor }, curr) =>
+  return [...new Set(p.separedPath)].reduce((acc: { [key: string]: TailwindColor }, curr) =>
     (acc[toKebabCase(curr.relativePath)] = {
       DEFAULT: `hsl(var(--${toKebabCase(curr.relativePath)}-b))`,
       foreground: `hsl(var(--${toKebabCase(curr.relativePath)}-f))`,
