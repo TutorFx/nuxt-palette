@@ -76,6 +76,10 @@ That's it! You can now use Nuxt Palette in your Nuxt app ✨
 
 </details>
 
+## License
+
+Licensed under the [MIT license](https://github.com/TutorFx/nuxt-palette/blob/dev/LICENSE.md).
+
 
 <!-- Badges -->
 [npm-version-src]: https://img.shields.io/npm/v/nuxt-palette/latest.svg?style=flat&colorA=020420&colorB=00DC82
