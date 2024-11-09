@@ -38,6 +38,12 @@ npx nuxi module add nuxt-palette
 
 That's it! You can now use Nuxt Palette in your Nuxt app ✨
 
+## Credits
+
+- [nuxt/nuxt](https://github.com/nuxt/nuxt)
+- [nuxt-modules/color-mode](https://github.com/nuxt-modules/color-mode)
+- [nuxt-modules/tailwindcss](https://github.com/nuxt-modules/tailwindcss)
+- [tailwindlabs/tailwindcss](https://github.com/tailwindlabs/tailwindcss)
 
 ## Contribution
 
