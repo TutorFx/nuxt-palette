@@ -4,6 +4,8 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
   ],
+  devtools: { enabled: true },
+  compatibilityDate: '2024-10-17',
   palette: {
     themes: {
       light: {
@@ -53,6 +55,4 @@ export default defineNuxtConfig({
       },
     },
   },
-  devtools: { enabled: true },
-  compatibilityDate: '2024-10-17',
 })
