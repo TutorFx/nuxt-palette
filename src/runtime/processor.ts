@@ -6,7 +6,7 @@ import { isString, isObject, isArray } from '@intlify/shared'
 import type { ConsolaInstance } from 'consola'
 import type { ExplicitTheme, SeparedPath, TailwindColor, Themes } from '../types'
 
-import { PathSet } from '../transform/path-classes'
+import { PathSet } from './path-classes'
 import { convertColor } from './colors'
 import { toKebabCase } from './utils'
 

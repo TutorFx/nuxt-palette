@@ -1,5 +1,5 @@
-import { getSeparatedPaths } from '../runtime/processor'
 import type { SeparedPath } from '../types'
+import { getSeparatedPaths } from './processor'
 
 class PathSet {
   separedPath: SeparedPath[]
