@@ -1,5 +1,4 @@
 import get from 'lodash/get.js'
-import mapKeys from 'lodash/mapKeys.js'
 import update from 'lodash/update.js'
 import { flatten } from 'flat'
 import { isString, isObject, isArray } from '@intlify/shared'
@@ -24,30 +23,23 @@ export function getSeparatedPaths(paths: string[]): SeparedPath[] {
 }
 
 export function extractPalettePaths(themes: Themes): PathSet | null {
-  const flat = flatten(themes)
+  const flatThemes = flatten(themes)
 
-  if (!isObject(flat)) return null
+  if (!isObject(flatThemes)) return null
 
-  return new PathSet([...new Set(
-    Object.keys(
-      mapKeys(flat, (value, key) => {
-        if (!isString(key)) return null
+  const palettePaths = Object.keys(flatThemes).reduce<string[]>((acc, key) => {
+    if (!isString(key)) return acc
 
-        if (key.endsWith('.b') || key.endsWith('.f')) {
-          const k = key.split('.')
-          k.pop()
-          return k.join('.')
-        }
+    if (key.endsWith('.b') || key.endsWith('.f')) {
+      acc.push(key.slice(0, -2)) // Optimized: Directly slice instead of split/join
+    }
+    else if (isString(flatThemes[key])) {
+      acc.push(key)
+    }
+    return acc
+  }, [])
 
-        if (isString(value)) {
-          return key
-        }
-
-        return null
-      }),
-    )
-      .filter(key => key != null),
-  )])
+  return new PathSet([...new Set(palettePaths)])
 }
 
 export function validatePaths(logger: ConsolaInstance, p: PathSet | null) {
