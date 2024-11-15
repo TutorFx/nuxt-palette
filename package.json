@@ -50,6 +50,7 @@
     "@types/color-convert": "^2.0.4",
     "@types/lodash": "^4.17.13",
     "@types/node": "^22.9.0",
+    "@vitest/coverage-v8": "^2.1.5",
     "changelogen": "^0.5.7",
     "color-convert": "^2.0.1",
     "commitizen": "^4.3.1",
