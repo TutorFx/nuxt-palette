@@ -1,6 +1,5 @@
 import get from 'lodash/get.js'
 import update from 'lodash/update.js'
-import { flatten } from 'flat'
 import { isString, isObject, isArray } from '@intlify/shared'
 import type { ConsolaInstance } from 'consola'
 import type { ExplicitTheme, SeparedPath, TailwindColor, Themes } from '../types'
@@ -22,9 +21,7 @@ export function getSeparatedPaths(paths: string[]): SeparedPath[] {
   })
 }
 
-export function extractPalettePaths(themes: Themes): PathSet | null {
-  const flatThemes = flatten(themes)
-
+export function extractPalettePaths(flatThemes: unknown): PathSet | null {
   if (!isObject(flatThemes)) return null
 
   const palettePaths = Object.keys(flatThemes).reduce<string[]>((acc, key) => {

@@ -22,7 +22,10 @@ export default defineNuxtModule<ModuleOptions>({
     const options = defu(_options, DEFAULT_PALETTE_OPTIONS)
 
     const { themes, defaultTheme, shades } = options
-    const paths = extractPalettePaths(themes)
+
+    const flatThemes = flatten(themes)
+
+    const paths = extractPalettePaths(flatThemes)
 
     validatePaths(logger, paths)
 
