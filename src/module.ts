@@ -1,6 +1,7 @@
 import { defineNuxtModule, addPlugin, createResolver, useLogger, installModule, addTemplate } from '@nuxt/kit'
 import { defu } from 'defu'
 
+import { flatten } from 'flat'
 import type { ModuleOptions } from './types'
 import { generateRootStyles, extractPalettePaths, processPalette, generateTailwindTheme, validatePaths } from './runtime/processor'
 import { DEFAULT_PALETTE_OPTIONS } from './runtime/constants'
@@ -29,7 +30,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     validatePaths(logger, paths)
 
-    const themeNames = Object.keys(themes)
     const palette = processPalette(themes, paths)
     const theme = generateTailwindTheme(themes, paths, shades)
 
@@ -54,7 +54,10 @@ export default defineNuxtModule<ModuleOptions>({
 
     addTemplate({
       filename: 'palette.config.mjs',
-      getContents: () => 'export default ' + JSON.stringify({ root, themeNames }),
+      getContents: () => 'export default ' + JSON.stringify({
+        root,
+        themeNames: paths?.themeNameSet ?? [],
+      }),
     })
 
     logger.success('Nuxt-Palette loaded')
