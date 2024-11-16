@@ -8,7 +8,9 @@ type HSLA = `hsla(${number}, ${number}%, ${number}%, ${number})`
 
 type HEX = `#${string}`
 
-type ColorValue = RGB | RGBA | HSL | HEX | HSLA
+type HWB = `hwb(${number}, ${number}%, ${number}%)`
+
+type ColorValue = RGB | RGBA | HSL | HEX | HSLA | HWB
 
 export interface ColorVariant {
   b: ColorValue
