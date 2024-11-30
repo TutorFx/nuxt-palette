@@ -1,14 +1,14 @@
-type RGB = `rgb(${number}, ${number}, ${number})`
+type RGB = `rgb(${string})`
 
-type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`
+type RGBA = `rgba(${string})`
 
-type HSL = `hsl(${number}, ${number}%, ${number}%)`
+type HSL = `hsl(${string})`
 
-type HSLA = `hsla(${number}, ${number}%, ${number}%, ${number})`
+type HSLA = `hsla(${string})`
 
 type HEX = `#${string}`
 
-type HWB = `hwb(${number}, ${number}%, ${number}%)`
+type HWB = `hwb(${string})`
 
 type ColorValue = RGB | RGBA | HSL | HEX | HSLA | HWB
 
