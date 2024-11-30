@@ -39,7 +39,7 @@
   "devDependencies": {
     "@intlify/shared": "^10.0.5",
     "@nuxt/devtools": "^1.6.1",
-    "@nuxt/eslint-config": "^0.6.2",
+    "@nuxt/eslint-config": "^0.7.0",
     "@nuxt/icon": "^1.9.0",
     "@nuxt/image": "^1.8.1",
     "@nuxt/module-builder": "^0.8.4",
