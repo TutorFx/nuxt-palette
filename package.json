@@ -1,6 +1,6 @@
 {
   "name": "nuxt-palette",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "",
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
   "dependencies": {
     "@nuxt/kit": "^3.14.1592",
     "defu": "^6.1.4",
+    "flat": "^6.0.1",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
@@ -57,7 +58,6 @@
     "color-string": "^1.9.1",
     "commitizen": "^4.3.1",
     "eslint": "^9.16.0",
-    "flat": "^6.0.1",
     "nuxt": "^3.14.1592",
     "typescript": "latest",
     "vitest": "^2.1.6",
