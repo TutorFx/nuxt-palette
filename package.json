@@ -38,7 +38,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@intlify/shared": "^10.0.5",
+    "@intlify/shared": "^11.0.0",
     "@nuxt/devtools": "^1.6.1",
     "@nuxt/eslint-config": "^0.7.0",
     "@nuxt/icon": "^1.9.0",
